@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>发送结果</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        h2 {
+            margin-top: 20px;
+            color: #666;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        li {
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 添加动态样式，如果失败数大于0则标记为红色 */
+        {{if gt .fail 0}}
+        h2.fail {
+            color: red;
+        }
+        {{end}}
+    </style>
+</head>
+<body>
+<h1>发送结果:</h1>
+<h2>总计发送邮件：{{.allCount}}</h2>
+<h2 class="fail">失败：{{.fail}}</h2>
+<ul>
+    {{range .res}}
+    <li>{{.}}</li>
+    {{end}}
+</ul>
+
+<!-- 添加下载按钮 -->
+{{if .downloadLink}}
+<a href="{{.downloadLink}}" download="发送结果.excel">下载结果</a>
+{{else}}
+<p>下载失败，请重试。</p>
+{{end}}
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Email群发</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        input[type="file"] {
+            margin-top: 5px;
+        }
+
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .dynamic-input-container {
+            margin-bottom: 10px;
+        }
+
+        .dynamic-input-container input {
+            display: inline-block;
+            width: calc(100% - 40px);
+            margin-right: 10px;
+        }
+
+        .add-input-button {
+            display: inline-block;
+            background-color: #1e90ff;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .add-input-button:hover {
+            background-color: #187bcd;
+        }
+    </style>
+    <script>
+        function addEmailInput() {
+            var container = document.getElementById("email-container");
+            var inputCount = container.getElementsByTagName("input").length / 2;
+
+            var div = document.createElement("div");
+            div.classList.add("dynamic-input-container");
+
+            var emailLabel = document.createElement("label");
+            emailLabel.textContent = "授权邮箱 " + (inputCount + 1) + ":";
+            var emailInput = document.createElement("input");
+            emailInput.type = "email";
+            emailInput.name = "email" + (inputCount + 1);
+            emailInput.required = true;
+
+            var passwordLabel = document.createElement("label");
+            passwordLabel.textContent = "授权码 " + (inputCount + 1) + ":";
+            var passwordInput = document.createElement("input");
+            passwordInput.type = "password";
+            passwordInput.name = "password" + (inputCount + 1);
+            passwordInput.required = true;
+
+            var button = document.createElement("button");
+            button.classList.add("add-input-button");
+            button.type = "button";
+            button.textContent = "+";
+            button.addEventListener("click", addEmailInput);
+
+            div.appendChild(emailLabel);
+            div.appendChild(emailInput);
+            div.appendChild(passwordLabel);
+            div.appendChild(passwordInput);
+            // div.appendChild(button);
+
+            container.appendChild(div);
+            container.appendChild(document.getElementById("add-input-button"));
+            // 更新隐藏的 inputCount 值
+            var inputCountInput = document.getElementById("input-count");
+            inputCountInput.value = inputCount + 1;
+
+        }
+    </script>
+</head>
+<body>
+<form action="/send" method="post" enctype="multipart/form-data">
+    <h2>授权邮箱</h2>
+    <label for="excel">上传授权邮箱Excel:</label>
+    <input type="file" id="excel2" name="excel2"><br><br>
+    <div id="email-container">
+        <div class="dynamic-input-container">
+            <label for="email1">邮箱1:</label>
+            <input type="email" id="email1" name="email1"  placeholder="邮箱地址:xxxx@163.com" >
+            <label for="password1">授权码1:</label>
+            <input type="password" id="password1" name="password1" placeholder="授权码:xxxxxxxx" >
+            <button id="add-input-button" class="add-input-button" type="button" onclick="addEmailInput()">+</button>
+        </div>
+    </div>
+    <!-- 隐藏的 inputCount 输入字段 -->
+    <input type="hidden" id="input-count" name="input-count" value="1">
+
+    <h2>收件人</h2>
+    <label for="excel">上传Excel:</label>
+    <input type="file" id="excel" name="excel" required><br><br>
+
+    <h2>发送频率</h2>
+    <label for="interval">每隔多少秒:</label>
+    <input type="number" id="interval" name="interval" min="0" required><br><br>
+
+    <h2>发送内容</h2>
+    <label for="content">内容:</label><br>
+    <textarea id="content" name="content" rows="4" cols="50" required></textarea><br><br>
+
+    <input type="submit" value="开始群发">
+</form>
+
